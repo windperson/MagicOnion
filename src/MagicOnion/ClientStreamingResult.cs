@@ -41,7 +41,7 @@ namespace MagicOnion
         async Task<TResponse> Deserialize()
         {
             var bytes = await inner.ResponseAsync.ConfigureAwait(false);
-            return LZ4MessagePackSerializer.Deserialize<TResponse>(bytes, resolver);
+            return MessagePackSerializer.Deserialize<TResponse>(bytes, resolver);
         }
 
         /// <summary>

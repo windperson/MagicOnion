@@ -52,7 +52,7 @@ namespace MagicOnion.Server.EmbeddedFilters
                 }
                 var str = sb.ToString();
 
-                var bytes = LZ4MessagePackSerializer.Serialize(str);
+                var bytes = MessagePackSerializer.Serialize(str);
                 context.CallContext.ResponseTrailers.Add(ExceptionDetailKey, bytes);
 
                 throw;

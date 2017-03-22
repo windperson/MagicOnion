@@ -39,7 +39,7 @@ namespace MagicOnion.Server
         public Func<object, byte> serialize;
 
         // reflection cache
-        static readonly MethodInfo messagePackDeserialize = typeof(LZ4MessagePackSerializer).GetMethods()
+        static readonly MethodInfo messagePackDeserialize = typeof(MessagePackSerializer).GetMethods()
             .First(x => x.Name == "Deserialize" && x.GetParameters().Length == 2 && x.GetParameters()[0].ParameterType == typeof(byte[]));
 
         public MethodHandler(MagicOnionOptions options, Type classType, MethodInfo methodInfo)
@@ -84,7 +84,7 @@ namespace MagicOnion.Server
                 case MethodType.ServerStreaming:
                     // (ServiceContext context) =>
                     // {
-                    //      var request = LZ4MessagePackSerializer.Deserialize<T>(context.Request, context.Resolver);
+                    //      var request = MessagePackSerializer.Deserialize<T>(context.Request, context.Resolver);
                     //      var result = new FooService() { Context = context }.Bar(request.Item1, request.Item2);
                     //      return MethodHandlerResultHelper.SerializeUnaryResult(result, context);
                     // };
@@ -186,12 +186,12 @@ namespace MagicOnion.Server
         // non-filtered.
         public byte[] BoxedSerialize(object requestValue)
         {
-            return LZ4MessagePackSerializer.NonGeneric.Serialize(RequestType, requestValue, resolver);
+            return MessagePackSerializer.NonGeneric.Serialize(RequestType, requestValue, resolver);
         }
 
         public object BoxedDeserialize(byte[] responseValue)
         {
-            return LZ4MessagePackSerializer.NonGeneric.Deserialize(UnwrappedResponseType, responseValue, resolver);
+            return MessagePackSerializer.NonGeneric.Deserialize(UnwrappedResponseType, responseValue, resolver);
         }
 
         static Type UnwrapResponseType(MethodInfo methodInfo, out MethodType methodType, out bool responseIsTask, out Type requestTypeIfExists)
@@ -514,7 +514,7 @@ namespace MagicOnion.Server
         {
             if (result.hasRawValue)
             {
-                var bytes = LZ4MessagePackSerializer.Serialize<T>(result.rawValue, context.FormatterResolver);
+                var bytes = MessagePackSerializer.Serialize<T>(result.rawValue, context.FormatterResolver);
                 context.Result = bytes;
             }
             return Task.CompletedTask;
@@ -525,7 +525,7 @@ namespace MagicOnion.Server
             var result = await taskResult.ConfigureAwait(false);
             if (result.hasRawValue)
             {
-                var bytes = LZ4MessagePackSerializer.Serialize<T>(result.rawValue, context.FormatterResolver);
+                var bytes = MessagePackSerializer.Serialize<T>(result.rawValue, context.FormatterResolver);
                 context.Result = bytes;
             }
         }
@@ -534,7 +534,7 @@ namespace MagicOnion.Server
         {
             if (result.hasRawValue)
             {
-                var bytes = LZ4MessagePackSerializer.Serialize<TResponse>(result.rawValue, context.FormatterResolver);
+                var bytes = MessagePackSerializer.Serialize<TResponse>(result.rawValue, context.FormatterResolver);
                 context.Result = bytes;
             }
             return Task.CompletedTask;
@@ -545,7 +545,7 @@ namespace MagicOnion.Server
             var result = await taskResult.ConfigureAwait(false);
             if (result.hasRawValue)
             {
-                var bytes = LZ4MessagePackSerializer.Serialize<TResponse>(result.rawValue, context.FormatterResolver);
+                var bytes = MessagePackSerializer.Serialize<TResponse>(result.rawValue, context.FormatterResolver);
                 context.Result = bytes;
             }
         }

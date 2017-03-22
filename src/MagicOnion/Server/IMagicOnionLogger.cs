@@ -148,7 +148,7 @@ namespace MagicOnion.Server
             if (bytes == null || bytes.Length == 0) return "";
             if (bytes.Length >= 5000) return "log is too large.";
 
-            return "dump:" + LZ4MessagePackSerializer.ToJson(bytes);
+            return "dump:" + MessagePackSerializer.ToJson(bytes);
         }
 
         // enum.ToString is slow.
@@ -224,7 +224,7 @@ namespace MagicOnion.Server
             if (bytes == null || bytes.Length == 0) return "";
             if (bytes.Length >= 5000) return "log is too large.";
 
-            var reData = LZ4MessagePackSerializer.NonGeneric.Deserialize(type, bytes, context.FormatterResolver);
+            var reData = MessagePackSerializer.NonGeneric.Deserialize(type, bytes, context.FormatterResolver);
             var reSerialized = MessagePackSerializer.NonGeneric.Serialize(type, reData, dumpResolver);
 
             return "dump:" + MessagePackSerializer.ToJson(reSerialized);
