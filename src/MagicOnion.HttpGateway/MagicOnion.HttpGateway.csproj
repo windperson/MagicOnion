@@ -1,7 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net47;net471</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461;net47;net471</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net461'">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DefineConstants>DEBUG;NET_FRAMEWORK;NET461;ENABLE_SAVE_ASSEMBLY;NON_UNITY;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU' AND '$(TargetFramework)' == 'net461'">
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <DefineConstants>RELEASE;NET_FRAMEWORK;NET46;NON_UNITY;</DefineConstants>
+    <DocumentationFile>bin\Release\net461\MagicOnion.HttpGateway.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU' AND '$(TargetFramework)' == 'net471'">
@@ -56,7 +69,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc" Version="1.8.3" />
-    <PackageReference Include="MessagePack" Version="1.7.0" />
+    <PackageReference Include="MessagePack" Version="1.7.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
